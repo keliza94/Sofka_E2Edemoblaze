@@ -1,0 +1,142 @@
+Conclusiones del Ejercicio – Automatización E2E en Demoblaze
+
+Este documento resume los hallazgos, conclusiones y aprendizajes
+obtenidos durante la implementación del flujo de compra automatizado en
+la página Demoblaze, utilizando Serenity BDD con el patrón Screenplay.
+
+------------------------------------------------------------------------
+
+✔️ 1. Correcta implementación del flujo E2E
+
+El flujo completo de compra pudo ser automatizado exitosamente:
+
+-   Navegación por el catálogo
+-   Selección y agregado de productos
+-   Visualización del carrito
+-   Registro de datos del formulario
+-   Finalización de la compra
+-   Validación del mensaje final
+
+El uso de Serenity Screenplay permitió escribir pruebas más legibles,
+mantenibles y centradas en el comportamiento del usuario.
+
+------------------------------------------------------------------------
+
+✔️ 2. Problemas encontrados y soluciones aplicadas
+
+Durante el desarrollo surgieron varios inconvenientes técnicos que
+fueron resueltos mediante ajustes de configuración, dependencias y
+entorno.
+
+🔸 2.1 Incompatibilidad de versiones entre Java y Serenity
+
+El proyecto fallaba al compilar mostrando:
+
+    Dependency requires at least JVM runtime version 16.
+    This build uses a Java 11 JVM.
+
+Causa:
+Serenity 4.x requiere Java 16+, pero el sistema estaba ejecutando Java
+11.
+
+Solución aplicada:
+
+-   Instalación de Java 17
+-   Configuración correcta de la variable de entorno JAVA_HOME
+-   Ajuste del Path para usar el nuevo JDK
+-   Validación con gradlew -version
+
+A partir de este cambio, el proyecto compiló correctamente.
+
+------------------------------------------------------------------------
+
+🔸 2.2 Gradle usando JDK equivocado
+
+Aunque Java 17 estaba instalado, Gradle seguía usando Java 11.
+
+Solución aplicada:
+
+-   Corrección de JAVA_HOME
+-   Eliminación de rutas antiguas del Path
+-   (Si fuese necesario) configuración adicional en gradle.properties:
+
+    org.gradle.java.home=C:\Program Files\Java\jdk-17.0.11
+
+Después de esto, Gradle usó correctamente Java 17.
+
+------------------------------------------------------------------------
+
+🔸 2.3 El navegador no se abría al ejecutar las pruebas
+
+Las pruebas pasaban, pero Chrome no se abría visualmente.
+
+Causa:
+En serenity.conf existía el argumento:
+
+    "--xheadless"
+
+Esto forzaba el modo headless (sin ventana gráfica).
+
+Solución aplicada:
+
+Eliminación del argumento:
+
+    args = [
+        "--remote-allow-origins=*"
+    ]
+
+Luego de esto, Chrome se abrió correctamente.
+
+------------------------------------------------------------------------
+
+✔️ 3. Beneficios del uso de Serenity BDD
+
+-   Reportes automáticos con evidencias paso a paso
+-   Capturas automáticas de pantalla
+-   Árbol de ejecución claro y de fácil revisión
+-   Integración natural con WebDriver
+-   Código más modular y reutilizable gracias al patrón Screenplay
+
+------------------------------------------------------------------------
+
+✔️ 4. Buenas prácticas aplicadas
+
+-   Uso de Java 17 (versión recomendada para Serenity 4.x)
+-   Configuración limpia del driver en serenity.conf
+-   Separación adecuada entre Tasks, Interactions, Questions y Pages
+-   Reporte generado en formato single-page-html optimizado
+-   Ejecución headless opcional mediante propiedades del sistema
+
+------------------------------------------------------------------------
+
+✔️ 5. Conclusión general
+
+A pesar de los problemas iniciales causados por incompatibilidades entre
+versiones de Java, Serenity y Gradle, el proyecto pudo ser configurado
+exitosamente y la automatización se ejecutó sin errores.
+
+La prueba E2E demuestra que Serenity BDD + Screenplay es una solución
+robusta y profesional para pruebas de interfaz web, especialmente cuando
+se requiere:
+
+-   Evidencia detallada
+-   Mantenibilidad
+-   Claridad para revisión técnica y no técnica
+-   Compatibilidad con pipelines CI/CD
+
+El flujo de compra de Demoblaze quedó automatizado de forma completa,
+estable y confiable.
+
+------------------------------------------------------------------------
+
+✔️ 6. Recomendaciones futuras
+
+-   Integrar este proyecto en un pipeline (GitHub Actions o Jenkins)
+-   Añadir validaciones adicionales del carrito y totales
+-   Completar escenarios alternativos (cancelar compra, remover
+    productos, etc.)
+-   Implementar pruebas visuales o comparativas en versiones posteriores
+
+------------------------------------------------------------------------
+
+Fin del documento.
