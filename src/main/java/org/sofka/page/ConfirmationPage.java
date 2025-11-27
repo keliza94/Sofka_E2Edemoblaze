@@ -4,10 +4,10 @@ import net.serenitybdd.screenplay.targets.Target;
 
 public class ConfirmationPage {
 
-    public static final Target CONFIRMATION_HEADER = Target.the("mensaje de confirmación")
-            .locatedBy("[data-test='complete-header']");
+    public static final Target CONFIRMATION_MESSAGE = Target.the("MENSAJE DE CONFIRMACION")
+            .locatedBy("//h2[contains(text(),'Thank you for your purchase!')]");
 
+    public static final Target CONFIRM_OK_BUTTON = Target.the("BOTON CONFIRMACION OK")
+            .locatedBy("//button[text()='OK']");
 
-    public static final Target BACK_HOME_BTN = Target.the("BOTÓN PARA REGRESAR AL HOME")
-            .locatedBy("#back-to-products");
 }

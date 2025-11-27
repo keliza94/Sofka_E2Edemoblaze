@@ -8,7 +8,7 @@ import org.sofka.page.ConfirmationPage;
 public class ConfirmationMessage {
 
     public static Question<String> text() {
-        return Text.of(ConfirmationPage.CONFIRMATION_HEADER).asString();
+        return Text.of(ConfirmationPage.CONFIRMATION_MESSAGE).asString();
     }
 
 }
